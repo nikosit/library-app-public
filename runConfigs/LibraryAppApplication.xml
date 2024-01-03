@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="LibraryAppApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <envs>
+      <env name="APP_MODE" value="dev" />
+      <env name="DATABASE_HOST" value="localhost" />
+      <env name="DATABASE_NAME" value="schwarz_db" />
+      <env name="DATABASE_PORT" value="5432" />
+      <env name="PASS_PGSQL" value="12345678!" />
+      <env name="USER_PGSQL" value="schwarz" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="de.schwarz.libraryapp.LibraryAppApplication" />
+    <module name="library-app" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="de.schwarz.libraryapp.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

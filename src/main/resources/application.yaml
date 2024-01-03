@@ -1,0 +1,29 @@
+server:
+  port: 8080 # default port, set only for demo purpose
+spring:
+  application:
+    name: library-app
+  mvc:
+    format:
+      date: yyyy-MM-dd
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: true
+  datasource:
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${USER_PGSQL}
+    password: ${PASS_PGSQL}
+    driver-class-name: org.postgresql.Driver
+security:
+  jwt:
+    secret-key: bigsecret
+    token-duration: 180_000
+application:
+  properties:
+    email:
+      regex: "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"
