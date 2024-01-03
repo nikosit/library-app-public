@@ -308,7 +308,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"customerId\": null,\n    \"name\": \"Nikolaos Tsotsos\",\n    \"email\": \"test@test.de\",\n    \"password\": \"12345678\"\n}",
+					"raw": "{\n    \"customerId\": null,\n    \"name\": \"Sven Raum\",\n    \"email\": \"test@test.de\",\n    \"password\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
