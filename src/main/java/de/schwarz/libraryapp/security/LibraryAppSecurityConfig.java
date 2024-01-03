@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
+@EnableWebSecurity
 @Configuration
 public class LibraryAppSecurityConfig {
 
@@ -32,9 +34,9 @@ public class LibraryAppSecurityConfig {
         http.exceptionHandling(h -> h.authenticationEntryPoint(unauthorizedHandler));
         http.securityMatcher("/**");
         http.authorizeHttpRequests(config -> {
-            config.requestMatchers("/**").permitAll()
-                    .requestMatchers("/actuator/**").permitAll()
+            config.requestMatchers("/actuator/**").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
+                    .requestMatchers("/v3/api-docs/**").permitAll()
                     .requestMatchers("/auth/v1/login").permitAll()
                     .anyRequest().authenticated();
         });

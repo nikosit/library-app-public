@@ -1,7 +1,7 @@
 # library-app
 ### Demo project about an online book library
 #### RunConfigs and Database directory for infrastructure and testing:
-1. ./runConfigs/library-docker-compose.yaml
+1. ./runConfigs/docker-compose.yaml
 2. ./runConfigs/LibraryAppApplication.xml
 3. ./data/init.sql
 #### API-Doc: http://localhost:8080/swagger-ui/index.html
