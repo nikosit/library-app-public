@@ -1,6 +1,7 @@
 package de.schwarz.libraryapp.category.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.schwarz.libraryapp.WithMockUser;
 import de.schwarz.libraryapp.category.domain.dto.CategoryDto;
 import de.schwarz.libraryapp.category.domain.dto.CategoryRequest;
 import de.schwarz.libraryapp.category.service.CategoryService;
@@ -8,9 +9,11 @@ import de.schwarz.libraryapp.exception.NoContentException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,7 +27,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(value = {CategoryResourceV1.class})
+@SpringBootTest
+@AutoConfigureMockMvc
 @ActiveProfiles(value = "dev")
 class CategoryResourceV1Test {
 
@@ -40,6 +44,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all categories => successful")
+    @WithMockUser
     void detectAllCategories1() {
         try {
             // Setup
@@ -66,6 +71,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all categories => successful - no content")
+    @WithMockUser
     void detectAllCategories2() {
         try {
             // Setup
@@ -86,6 +92,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all categories => internal server error")
+    @WithMockUser
     void detectAllCategories3() {
         try {
             // Setup
@@ -105,13 +112,14 @@ class CategoryResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for detecting all categories => error - unauthorized")
     void detectAllCategories4() {
         try {
             // Run the test
             mockMvc.perform(get("/api/v1/categories")
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -119,20 +127,8 @@ class CategoryResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for detecting all categories => error - forbidden")
-    void detectAllCategories5() {
-        try {
-            // Run the test
-            mockMvc.perform(get("/api/v1/categories")
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for detecting all categories for the given description => successful")
+    @WithMockUser
     void detectCategoriesFromDescription1() {
         try {
             // Setup
@@ -162,6 +158,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all categories for the given description => successful - no content")
+    @WithMockUser
     void detectCategoriesFromDescription2() {
         try {
             // Setup
@@ -186,6 +183,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all categories for the given description => error - bad request")
+    @WithMockUser
     void detectCategoriesFromDescription3() {
         try {
             // Setup
@@ -209,6 +207,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all categories for the given description => internal server error")
+    @WithMockUser
     void detectCategoriesFromDescription4() {
         try {
             // Setup
@@ -232,7 +231,7 @@ class CategoryResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for detecting all categories for the given description => error - unauthorized")
     void detectCategoriesFromDescription5() {
         try {
@@ -242,7 +241,8 @@ class CategoryResourceV1Test {
             // Run the test
             mockMvc.perform(get("/api/v1/categories/description")
                             .param("description", description)
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -250,24 +250,8 @@ class CategoryResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for detecting all categories for the given description => error - forbidden")
-    void detectCategoriesFromDescription6() {
-        try {
-            // Setup
-            final String description = "Horror";
-
-            // Run the test
-            mockMvc.perform(get("/api/v1/categories/description")
-                            .param("description", description)
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for detecting a category for the given description => successful")
+    @WithMockUser
     void detectCategoryFromDescription1() {
         try {
             // Setup
@@ -296,6 +280,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting a category for the given description => successful - no content")
+    @WithMockUser
     void detectCategoryFromDescription2() {
         try {
             // Setup
@@ -320,6 +305,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting a category for the given description => error - bad request")
+    @WithMockUser
     void detectCategoryFromDescription3() {
         try {
             // Setup
@@ -343,6 +329,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting a category for the given description => internal server error")
+    @WithMockUser
     void detectCategoryFromDescription4() {
         try {
             // Setup
@@ -366,9 +353,9 @@ class CategoryResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for detecting a category for the given description => error - unauthorized")
-    void detectCategoriesFromDescription5() {
+    void detectCategoryFromDescription5() {
         try {
             // Setup
             final String description = "Horror";
@@ -376,7 +363,8 @@ class CategoryResourceV1Test {
             // Run the test
             mockMvc.perform(get("/api/v1/category/description")
                             .param("description", description)
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -384,24 +372,8 @@ class CategoryResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for detecting a category for the given description => error - forbidden")
-    void detectCategoriesFromDescription6() {
-        try {
-            // Setup
-            final String description = "Horror";
-
-            // Run the test
-            mockMvc.perform(get("/api/v1/category/description")
-                            .param("description", description)
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for detecting a category by the given category id => successful")
+    @WithMockUser
     void detectCategory1() {
         try {
             // Setup
@@ -430,6 +402,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting a category by the given category id => successful - no content")
+    @WithMockUser
     void detectCategory2() {
         try {
             // Setup
@@ -454,6 +427,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting a category by the given category id => error - bad request")
+    @WithMockUser
     void detectCategory3() {
         try {
             // Setup
@@ -477,6 +451,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting a category by the given category id => internal server error")
+    @WithMockUser
     void detectCategory4() {
         try {
             // Setup
@@ -500,7 +475,7 @@ class CategoryResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for detecting a category by the given category id => error - not authorized")
     void detectCategory5() {
         try {
@@ -509,7 +484,8 @@ class CategoryResourceV1Test {
             // Run the test
             mockMvc.perform(get("/api/v1/category/id")
                             .param("categoryId", String.valueOf(categoryId))
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -517,23 +493,8 @@ class CategoryResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for detecting a category by the given category id => error - forbidden")
-    void detectCategory6() {
-        try {
-            // Setup
-            final Long categoryId = 99999L;
-            // Run the test
-            mockMvc.perform(get("/api/v1/category/id")
-                            .param("categoryId", String.valueOf(categoryId))
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for create or update a category => successful")
+    @WithMockUser
     void saveCategory1() {
         try {
             // Setup
@@ -559,6 +520,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for create or update a category => successful - no content")
+    @WithMockUser
     void saveCategory2() {
         try {
             // Setup
@@ -584,6 +546,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for create or update a category => error - bad request - empty request")
+    @WithMockUser
     void saveCategory3() {
         try {
             // Setup
@@ -607,6 +570,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for create or update a category => error - bad request - empty description")
+    @WithMockUser
     void saveCategory4() {
         try {
             // Setup
@@ -632,6 +596,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for create or update a category => internal server error")
+    @WithMockUser
     void saveCategory5() {
         try {
             // Setup
@@ -656,7 +621,7 @@ class CategoryResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for create or update a category => error - not authorized")
     void saveCategory6() {
         try {
@@ -667,7 +632,8 @@ class CategoryResourceV1Test {
             // Run the test
             mockMvc.perform(post("/api/v1/category")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(mapper.writeValueAsString(request)))
+                            .content(mapper.writeValueAsString(request))
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -675,25 +641,8 @@ class CategoryResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for create or update a category => error - forbidden")
-    void saveCategory7() {
-        try {
-            // Setup
-            final CategoryDto category = createCategoryDto();
-            final CategoryRequest request = createCategoryRequest(category);
-
-            // Run the test
-            mockMvc.perform(post("/api/v1/category")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(mapper.writeValueAsString(request)))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for removing a category for the given category id => successful")
+    @WithMockUser
     void removeCategory1() {
         try {
             // Setup
@@ -718,6 +667,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for removing a category for the given category id => successful - no content")
+    @WithMockUser
     void removeCategory2() {
         try {
             // Setup
@@ -742,6 +692,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for removing a category for the given category id => error - bad request")
+    @WithMockUser
     void removeCategory3() {
         try {
             // Setup
@@ -765,6 +716,7 @@ class CategoryResourceV1Test {
 
     @Test
     @DisplayName("Resource for removing a category for the given category id => internal server error")
+    @WithMockUser
     void removeCategory4() {
         try {
             // Setup
@@ -788,7 +740,7 @@ class CategoryResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for removing a category for the given category id => error - not authorized")
     void removeCategory5() {
         try {
@@ -797,28 +749,13 @@ class CategoryResourceV1Test {
             // Run the test
             mockMvc.perform(delete("/api/v1/category/id")
                             .param("categoryId", String.valueOf(categoryId))
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
         }
     }
-
-    @Test
-    @DisplayName("Resource for removing a category for the given category id => error - forbidden")
-    void removeCategory6() {
-        try {
-            // Setup
-            final Long categoryId = 52L;
-            // Run the test
-            mockMvc.perform(delete("/api/v1/category/id")
-                            .param("categoryId", String.valueOf(categoryId))
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
 
     private CategoryDto createCategoryDto() {
         CategoryDto category = new CategoryDto();

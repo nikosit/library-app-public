@@ -1,6 +1,7 @@
 package de.schwarz.libraryapp.book.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.schwarz.libraryapp.WithMockUser;
 import de.schwarz.libraryapp.book.domain.dto.BookDto;
 import de.schwarz.libraryapp.book.domain.dto.BookRequest;
 import de.schwarz.libraryapp.book.service.BookService;
@@ -8,9 +9,11 @@ import de.schwarz.libraryapp.exception.NoContentException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,7 +27,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(value = {BookResourceV1.class})
+@SpringBootTest
+@AutoConfigureMockMvc
 @ActiveProfiles(value = "dev")
 class BookResourceV1Test {
 
@@ -40,6 +44,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all books => successful")
+    @WithMockUser
     void detectAllBooks1() {
         try {
             // Setup
@@ -69,6 +74,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all books => successful - no content")
+    @WithMockUser
     void detectAllBooks2() {
         try {
             // Setup
@@ -89,6 +95,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all books => internal server error")
+    @WithMockUser
     void detectAllBooks3() {
         try {
             // Setup
@@ -108,13 +115,14 @@ class BookResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for detecting all books => error - unauthorized")
     void detectAllBooks4() {
         try {
             // Run the test
             mockMvc.perform(get("/api/v1/books")
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -122,20 +130,8 @@ class BookResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for detecting all books => error - forbidden")
-    void detectAllBooks5() {
-        try {
-            // Run the test
-            mockMvc.perform(get("/api/v1/books")
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for detecting all books for the given author => successful")
+    @WithMockUser
     void detectBooksFromAuthor1() {
         try {
             // Setup
@@ -168,6 +164,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all books for the given author => successful - no content")
+    @WithMockUser
     void detectBooksFromAuthor2() {
         try {
             // Setup
@@ -192,6 +189,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all books for the given author => error - bad request")
+    @WithMockUser
     void detectBooksFromAuthor3() {
         try {
             // Setup
@@ -215,6 +213,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all books for the given author => internal server error")
+    @WithMockUser
     void detectBooksFromAuthor4() {
         try {
             // Setup
@@ -238,7 +237,7 @@ class BookResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for detecting all books for the given author => error - unauthorized")
     void detectBooksFromAuthor5() {
         try {
@@ -248,7 +247,8 @@ class BookResourceV1Test {
             // Run the test
             mockMvc.perform(get("/api/v1/books/author")
                             .param("author", author)
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -256,23 +256,8 @@ class BookResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for detecting all books for the given author => error - forbidden")
-    void detectBooksFromAuthor6() {
-        try {
-            // Setup
-            final String author = "Harry Ken";
-            // Run the test
-            mockMvc.perform(get("/api/v1/books/author")
-                            .param("author", author)
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for detecting all books for the given category => successful")
+    @WithMockUser
     void detectBooksInCategory1() {
         try {
             // Setup
@@ -305,6 +290,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all books for the given category => successful - no content")
+    @WithMockUser
     void detectBooksInCategory2() {
         try {
             // Setup
@@ -329,6 +315,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all books for the given category => error - bad request")
+    @WithMockUser
     void detectBooksInCategory3() {
         try {
             // Setup
@@ -352,6 +339,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting all books for the given category => internal server error")
+    @WithMockUser
     void detectBooksInCategory4() {
         try {
             // Setup
@@ -375,7 +363,7 @@ class BookResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for detecting all books for the given category => error - unauthorized")
     void detectBooksInCategory5() {
         try {
@@ -385,7 +373,8 @@ class BookResourceV1Test {
             // Run the test
             mockMvc.perform(get("/api/v1/books/category")
                             .param("category", category)
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -393,24 +382,8 @@ class BookResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for detecting all books for the given category => error - forbidden")
-    void detectBooksInCategory6() {
-        try {
-            // Setup
-            final String category = "Sci-Fi";
-
-            // Run the test
-            mockMvc.perform(get("/api/v1/books/category")
-                            .param("category", category)
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for detecting a book by the given book id => successful")
+    @WithMockUser
     void detectBook1() {
         try {
             // Setup
@@ -443,6 +416,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting a book by the given book id => successful - no content")
+    @WithMockUser
     void detectBook2() {
         try {
             // Setup
@@ -467,6 +441,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting a book by the given book id => error - bad request")
+    @WithMockUser
     void detectBook3() {
         try {
             // Setup
@@ -490,6 +465,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for detecting a book by the given book id => internal server error")
+    @WithMockUser
     void detectBook4() {
         try {
             // Setup
@@ -513,7 +489,7 @@ class BookResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for detecting a book by the given book id => error - not authorized")
     void detectBook5() {
         try {
@@ -522,7 +498,8 @@ class BookResourceV1Test {
             // Run the test
             mockMvc.perform(get("/api/v1/book/id")
                             .param("bookId", String.valueOf(bookId))
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -530,23 +507,8 @@ class BookResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for detecting a book by the given book id => error - forbidden")
-    void detectBook6() {
-        try {
-            // Setup
-            final Long bookId = 99999L;
-            // Run the test
-            mockMvc.perform(get("/api/v1/book/id")
-                            .param("bookId", String.valueOf(bookId))
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for create or update a book => successful")
+    @WithMockUser
     void saveBook1() {
         try {
             // Setup
@@ -578,6 +540,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for create or update a book => successful - no content")
+    @WithMockUser
     void saveBook2() {
         try {
             // Setup
@@ -603,6 +566,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for create or update a book => error - bad request - empty request")
+    @WithMockUser
     void saveBook3() {
         try {
             // Setup
@@ -626,6 +590,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for create or update a book => error - bad request - empty publisher")
+    @WithMockUser
     void saveBook4() {
         try {
             // Setup
@@ -651,6 +616,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for create or update a book => internal server error")
+    @WithMockUser
     void saveBook5() {
         try {
             // Setup
@@ -675,7 +641,7 @@ class BookResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for create or update a book => error - not authorized")
     void saveBook6() {
         try {
@@ -686,7 +652,8 @@ class BookResourceV1Test {
             // Run the test
             mockMvc.perform(post("/api/v1/book")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(mapper.writeValueAsString(request)))
+                            .content(mapper.writeValueAsString(request))
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
@@ -694,25 +661,8 @@ class BookResourceV1Test {
     }
 
     @Test
-    @DisplayName("Resource for create or update a book => error - forbidden")
-    void saveBook7() {
-        try {
-            // Setup
-            final BookDto book = createBookDto();
-            final BookRequest request = createBookRequest(book);
-
-            // Run the test
-            mockMvc.perform(post("/api/v1/book")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(mapper.writeValueAsString(request)))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
-
-    @Test
     @DisplayName("Resource for removing a book for the given book id => successful")
+    @WithMockUser
     void removeBook1() {
         try {
             // Setup
@@ -738,6 +688,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for removing a book for the given book id => successful - no content")
+    @WithMockUser
     void removeBook2() {
         try {
             // Setup
@@ -762,6 +713,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for removing a book for the given book id => error - bad request")
+    @WithMockUser
     void removeBook3() {
         try {
             // Setup
@@ -785,6 +737,7 @@ class BookResourceV1Test {
 
     @Test
     @DisplayName("Resource for removing a book for the given book id => internal server error")
+    @WithMockUser
     void removeBook4() {
         try {
             // Setup
@@ -808,7 +761,7 @@ class BookResourceV1Test {
         }
     }
 
-    /*@Test
+    @Test
     @DisplayName("Resource for removing a book for the given book id => error - not authorized")
     void removeBook5() {
         try {
@@ -817,28 +770,13 @@ class BookResourceV1Test {
             // Run the test
             mockMvc.perform(delete("/api/v1/book/id")
                             .param("bookId", String.valueOf(bookId))
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .with(SecurityMockMvcRequestPostProcessors.anonymous()))
                     .andExpect(status().isUnauthorized());
         } catch (Exception e) {
             fail("Test failed because of => \nStacktrace: ", e);
         }
     }
-
-    @Test
-    @DisplayName("Resource for removing a book for the given book id => error - forbidden")
-    void removeBook6() {
-        try {
-            // Setup
-            final Long bookId = 99999L;
-            // Run the test
-            mockMvc.perform(delete("/api/v1/book/id")
-                            .param("bookId", String.valueOf(bookId))
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isForbidden());
-        } catch (Exception e) {
-            fail("Test failed because of => \nStacktrace: ", e);
-        }
-    }*/
 
     private BookDto createBookDto() {
         BookDto book = new BookDto();
